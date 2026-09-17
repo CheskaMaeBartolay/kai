@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kai Hub — My Games</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="eyebrow">PLAY • EXPLORE • ENJOY</span>
+        <h1>WELCOME TO<br><span>KAI HUB</span></h1>
+        <p>
+          Your ultimate destination for my games.<br>
+          Explore, play, and enjoy all my creations — all in one place.
+        </p>
+        <a class="primary-btn" href="#my-games">
+          <span>▶</span> Start Playing
+        </a>
+
+       <div class="presence-card">
+  <span id="statusDot" class="status-dot offline"></span>
+
+  <div class="presence-info">
+    <strong id="onlineStatus">Checking status...</strong>
+    <p id="currentGame">Loading Roblox activity...</p>
+
+    <a
+      id="joinGameBtn"
+      class="join-game-btn"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="display: none;"
+    >
+      Join Current Game →
+    </a>
+  </div>
+</div>
+        </div>
+        <div class="hero-art" aria-label="Kafka Hub character artwork"><img class="hero-character" src="assets/kai.png" alt="Kafka Hub character" /></div>
+      </div>
+    </section>
+
+    <!-- MY GAMES ONLY -->
+    <section class="games-section" id="my-games">
+      <div class="section-heading">
+        <div>
+          <h2><span class="heading-icon">♙</span> MY <b>GAMES</b></h2>
+          <p>Games created and developed by me.</p>
+        </div>
+        <button class="view-btn" id="viewAllBtn">View All <span>→</span></button>
+      </div>
+
+      <div class="games-grid" id="gamesGrid">
+
+        <article class="game-card">
+  <div class="game-image">
+    <img src="assets/asmr.jpg" alt="ASMR Keyboard Tower">
+    <span class="number">01</span>
+  </div>
+
+  <div class="card-body">
+    <h3>ASMR Keyboard Tower</h3>
+
+    <p>Complete the tower and earn Bounty.</p>
+
+    <div class="tags">
+      <span>Obby</span>
+      <span>Adventure</span>
+    </div>
+
+    <button
+      class="play-btn"
+      data-game="ASMR Keyboard Tower"
+    >
+      Play <span>→</span>
+    </button>
+  </div>
+</article>
+
+        <article class="game-card">
+          <div class="game-image">
+            <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=900&q=80" alt="Garden Tycoon">
+            <span class="number">02</span>
+          </div>
+          <div class="card-body">
+            <h3>Garden Tycoon</h3>
+            <p>Grow your garden, collect items and become the richest.</p>
+            <div class="tags">
+              <span>Tycoon</span><span>Simulator</span>
+            </div>
+            <button class="play-btn" data-game="Garden Tycoon">Play <span>→</span></button>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-image">
+            <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=900&q=80" alt="Anime Battle Arena">
+            <span class="number">03</span>
+          </div>
+          <div class="card-body">
+            <h3>Anime Battle Arena</h3>
+            <p>Fight with your favorite anime-inspired characters.</p>
+            <div class="tags">
+              <span>PVP</span><span>Action</span>
+            </div>
+            <button class="play-btn" data-game="Anime Battle Arena">Play <span>→</span></button>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-image">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80" alt="Car Dealership">
+            <span class="number">04</span>
+          </div>
+          <div class="card-body">
+            <h3>Car Dealership</h3>
+            <p>Buy, customize and sell your dream cars.</p>
+            <div class="tags">
+              <span>Tycoon</span><span>Simulation</span>
+            </div>
+            <button class="play-btn" data-game="Car Dealership">Play <span>→</span></button>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-image">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80" alt="Island Survival">
+            <span class="number">05</span>
+          </div>
+          <div class="card-body">
+            <h3>Island Survival</h3>
+            <p>Build, survive and explore a mysterious island.</p>
+            <div class="tags">
+              <span>Survival</span><span>Building</span>
+            </div>
+            <button class="play-btn" data-game="Island Survival">Play <span>→</span></button>
+          </div>
+        </article>
+
+        <article class="game-card extra-game">
+          <div class="game-image">
+            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80" alt="Neon City">
+            <span class="number">06</span>
+          </div>
+          <div class="card-body">
+            <h3>Neon City</h3>
+            <p>Explore a futuristic city filled with secrets and challenges.</p>
+            <div class="tags">
+              <span>Action</span><span>Open World</span>
+            </div>
+            <button class="play-btn" data-game="Neon City">Play <span>→</span></button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><span>♛</span> KAI<b>HUB</b></div>
+    <p>© 2026 KAI Hub. All rights reserved.</p>
+    <div class="socials">
+      <span>Discord</span>
+      <span>YouTube</span>
+      <span>Roblox</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Opening game...</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
