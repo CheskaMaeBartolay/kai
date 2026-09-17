@@ -7,7 +7,7 @@ const currentGame = document.getElementById("currentGame");
 const statusDot = document.getElementById("statusDot");
 const currentGameLink = document.getElementById("currentGameLink");
 
-const ROBLOX_USER_ID = 977146001;
+const ROBLOX_USER_ID = 8685718614;
 
 const gameLinks = {
   "ASMR Keyboard Tower": "https://www.roblox.com/games/95466577544785/ASMR-Pink-Keyboard-Tower",
@@ -94,7 +94,7 @@ async function loadRobloxPresence() {
 }
 
 loadRobloxPresence();
-setInterval(loadRobloxPresence, 30000);
+setInterval(loadRobloxPresence, 300);
 
 
 const joinGameBtn = document.getElementById("joinGameBtn");
