@@ -22,15 +22,22 @@ const gameLinks = {
 
 function showToast(message) {
   if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add("show");
+
   clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+  window.toastTimer = setTimeout(
+    () => toast.classList.remove("show"),
+    2800
+  );
 }
 
 viewAllBtn?.addEventListener("click", () => {
   gamesGrid?.classList.toggle("show-all");
+
   const expanded = gamesGrid?.classList.contains("show-all");
+
   viewAllBtn.innerHTML = expanded
     ? 'Show Less <span>↑</span>'
     : 'View All <span>→</span>';
@@ -50,6 +57,16 @@ document.querySelectorAll(".play-btn").forEach((button) => {
   });
 });
 
+function setStatusUnavailable() {
+  if (onlineStatus) onlineStatus.textContent = "Status unavailable";
+  if (currentGame) {
+    currentGame.textContent = "Roblox activity could not be loaded";
+  }
+  if (statusDot) statusDot.className = "status-dot offline";
+  if (currentGameLink) currentGameLink.hidden = true;
+  if (joinGameBtn) joinGameBtn.style.display = "none";
+}
+
 async function loadRobloxPresence() {
   if (!onlineStatus || !currentGame || !statusDot) return;
 
@@ -62,11 +79,17 @@ async function loadRobloxPresence() {
       }
     );
 
-    if (!response.ok) throw new Error("Presence API failed");
+    if (!response.ok) {
+      throw new Error(`Presence API failed: ${response.status}`);
+    }
 
     const data = await response.json();
     const presence = data.userPresences?.[0];
     const presenceType = presence?.userPresenceType ?? 0;
+
+    // Hide both buttons before applying the new status.
+    if (currentGameLink) currentGameLink.hidden = true;
+    if (joinGameBtn) joinGameBtn.style.display = "none";
 
     if (presenceType === 2) {
       onlineStatus.textContent = "Online — Playing Roblox";
@@ -74,20 +97,18 @@ async function loadRobloxPresence() {
         presence.lastLocation || "Playing a Roblox game";
       statusDot.className = "status-dot online";
 
+      // Original current game link.
       if (currentGameLink && presence.placeId) {
         currentGameLink.href =
           `https://www.roblox.com/games/${presence.placeId}`;
         currentGameLink.hidden = false;
-      } else if (currentGameLink) {
-        currentGameLink.hidden = true;
       }
 
+      // Original Join Current Game button.
       if (joinGameBtn && presence.placeId) {
         joinGameBtn.href =
           `https://www.roblox.com/games/start?placeId=${presence.placeId}`;
         joinGameBtn.style.display = "inline-flex";
-      } else if (joinGameBtn) {
-        joinGameBtn.style.display = "none";
       }
 
     } else if (presenceType === 3) {
@@ -95,42 +116,28 @@ async function loadRobloxPresence() {
       currentGame.textContent = "Currently developing a game";
       statusDot.className = "status-dot studio";
 
-      if (currentGameLink) currentGameLink.hidden = true;
-      if (joinGameBtn) joinGameBtn.style.display = "none";
-
     } else if (presenceType === 1) {
       onlineStatus.textContent = "Online";
       currentGame.textContent = "Browsing Roblox";
       statusDot.className = "status-dot online";
 
-      if (currentGameLink) currentGameLink.hidden = true;
-      if (joinGameBtn) joinGameBtn.style.display = "none";
-
     } else {
       onlineStatus.textContent = "Offline";
       currentGame.textContent = "Not currently playing Roblox";
       statusDot.className = "status-dot offline";
-
-      if (currentGameLink) currentGameLink.hidden = true;
-      if (joinGameBtn) joinGameBtn.style.display = "none";
     }
 
   } catch (error) {
     console.error("Roblox presence error:", error);
-
-    onlineStatus.textContent = "Status unavailable";
-    currentGame.textContent = "Roblox activity could not be loaded";
-    statusDot.className = "status-dot offline";
-
-    if (currentGameLink) currentGameLink.hidden = true;
-    if (joinGameBtn) joinGameBtn.style.display = "none";
+    setStatusUnavailable();
   }
 }
 
+// One refresh timer only.
 loadRobloxPresence();
 setInterval(loadRobloxPresence, 30000);
 
-// Refresh when returning to the tab/app, including mobile browsers and tablets.
+// Refresh when returning to the website on mobile, iPad, or tablet.
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     loadRobloxPresence();
