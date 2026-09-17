@@ -6,7 +6,6 @@ const toast = document.getElementById("toast");
 const onlineStatus = document.getElementById("onlineStatus");
 const currentGame = document.getElementById("currentGame");
 const statusDot = document.getElementById("statusDot");
-const currentGameLink = document.getElementById("currentGameLink");
 const joinGameBtn = document.getElementById("joinGameBtn");
 
 const ROBLOX_USER_ID = 8685718614;
@@ -43,6 +42,7 @@ viewAllBtn?.addEventListener("click", () => {
     : 'View All <span>→</span>';
 });
 
+// Keep all game card links working.
 document.querySelectorAll(".play-btn").forEach((button) => {
   button.addEventListener("click", () => {
     const game = button.dataset.game;
@@ -57,14 +57,29 @@ document.querySelectorAll(".play-btn").forEach((button) => {
   });
 });
 
-function setStatusUnavailable() {
-  if (onlineStatus) onlineStatus.textContent = "Status unavailable";
-  if (currentGame) {
-    currentGame.textContent = "Roblox activity could not be loaded";
+// Update the status card.
+function setPresenceStatus(label, game, state) {
+  if (onlineStatus) onlineStatus.textContent = label;
+  if (currentGame) currentGame.textContent = game;
+  if (statusDot) statusDot.className = `status-dot ${state}`;
+}
+
+// Hide the Join Current Game button.
+function hideJoinGameButton() {
+  if (joinGameBtn) {
+    joinGameBtn.style.display = "none";
+    joinGameBtn.removeAttribute("href");
   }
-  if (statusDot) statusDot.className = "status-dot offline";
-  if (currentGameLink) currentGameLink.hidden = true;
-  if (joinGameBtn) joinGameBtn.style.display = "none";
+}
+
+// Show the Join Current Game button with the current Roblox game.
+function showJoinGameButton(placeId) {
+  if (!joinGameBtn || !placeId) return;
+
+  joinGameBtn.href =
+    `https://www.roblox.com/games/start?placeId=${placeId}`;
+
+  joinGameBtn.style.display = "inline-flex";
 }
 
 async function loadRobloxPresence() {
@@ -87,53 +102,55 @@ async function loadRobloxPresence() {
     const presence = data.userPresences?.[0];
     const presenceType = presence?.userPresenceType ?? 0;
 
-    // Hide both buttons before applying the new status.
-    if (currentGameLink) currentGameLink.hidden = true;
-    if (joinGameBtn) joinGameBtn.style.display = "none";
+    // Reset the button before applying the new status.
+    hideJoinGameButton();
 
     if (presenceType === 2) {
-      onlineStatus.textContent = "Online — Playing Roblox";
-      currentGame.textContent =
-        presence.lastLocation || "Playing a Roblox game";
-      statusDot.className = "status-dot online";
+      setPresenceStatus(
+        "Currently Playing",
+        presence.lastLocation || "Playing a Roblox game",
+        "online"
+      );
 
-      // Original current game link.
-      if (currentGameLink && presence.placeId) {
-        currentGameLink.href =
-          `https://www.roblox.com/games/${presence.placeId}`;
-        currentGameLink.hidden = false;
-      }
-
-      // Original Join Current Game button.
-      if (joinGameBtn && presence.placeId) {
-        joinGameBtn.href =
-          `https://www.roblox.com/games/start?placeId=${presence.placeId}`;
-        joinGameBtn.style.display = "inline-flex";
-      }
+      // Restore the original Join Current Game button.
+      showJoinGameButton(presence.placeId);
 
     } else if (presenceType === 3) {
-      onlineStatus.textContent = "In Roblox Studio";
-      currentGame.textContent = "Currently developing a game";
-      statusDot.className = "status-dot studio";
+      setPresenceStatus(
+        "In Roblox Studio",
+        "Currently developing a game.",
+        "studio"
+      );
 
     } else if (presenceType === 1) {
-      onlineStatus.textContent = "Online";
-      currentGame.textContent = "Browsing Roblox";
-      statusDot.className = "status-dot online";
+      setPresenceStatus(
+        "Online",
+        "Browsing Roblox",
+        "online"
+      );
 
     } else {
-      onlineStatus.textContent = "Offline";
-      currentGame.textContent = "Not currently playing Roblox";
-      statusDot.className = "status-dot offline";
+      setPresenceStatus(
+        "Offline",
+        "Not currently playing Roblox.",
+        "offline"
+      );
     }
 
   } catch (error) {
     console.error("Roblox presence error:", error);
-    setStatusUnavailable();
+
+    setPresenceStatus(
+      "Status unavailable",
+      "Roblox activity could not be loaded",
+      "offline"
+    );
+
+    hideJoinGameButton();
   }
 }
 
-// One refresh timer only.
+// Refresh once on page load and every 30 seconds.
 loadRobloxPresence();
 setInterval(loadRobloxPresence, 30000);
 
